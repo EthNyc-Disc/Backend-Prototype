@@ -130,35 +130,46 @@ async function fetch_data(chainId, address, api_key, baseURL) {
 async function query_chain() {
     const baseURL = 'https://api.covalenthq.com/v1'
     const chainId = '1'
-    const given_contract = prompt('Contract Address to Query: ')
-    const api_key = 'ckey_d6591b5b3a29491dba00f3d9297'
-    array = await fetch_data(chainId, given_contract, api_key, baseURL)
-    return array
+    const given_contract = prompt('Contract Address to Query: ')    
+    const contract_verify = web3.utils.isAddress(given_contract)
+    if (contract_verify === true) {
+        const api_key = 'ckey_d6591b5b3a29491dba00f3d9297'
+        array = await fetch_data(chainId, given_contract, api_key, baseURL)
+        return array
+    } else {
+        return false
+    }
+
 }
 
 async function filter_accounts () {
     const transactions = await query_chain()
-    let addresses_from_query = []
-    let transaction_metadata = transactions['items']
-    console.log(transaction_metadata.length)
-    let transaction_idx = 0 
-    for (transaction_idx; transaction_idx <= transaction_metadata.length; transaction_idx++) {
-        let transaction = transaction_metadata[transaction_idx]
-        if (transaction !== undefined) {
-            const address_filter = transaction['address']
-            let contract_check = web3.utils.isAddress(address_filter)
-            if (contract_check === true) {
-                console.log(`${address_filter} passed`)
-                addresses_from_query.push(address_filter)
-    
-            } else {
-                console.log(`${address_filter} was not passed`)
+    if (transactions !== false) {
+        let addresses_from_query = []
+        let transaction_metadata = transactions['items']
+        console.log(transaction_metadata.length)
+        let transaction_idx = 0 
+        for (transaction_idx; transaction_idx <= transaction_metadata.length; transaction_idx++) {
+            let transaction = transaction_metadata[transaction_idx]
+            if (transaction !== undefined) {
+                const address_filter = transaction['address']
+                let contract_check = web3.utils.isAddress(address_filter)
+                if (contract_check === true) {
+                    console.log(`${address_filter} passed`)
+                    addresses_from_query.push(address_filter)
+        
+                } else {
+                    console.log(`${address_filter} was not passed`)
+                }
             }
+    
         }
-
+    
+        return addresses_from_query
+    } else {
+        console.log('There was an error processing due to invalid contract address')
     }
 
-    return addresses_from_query
 }
 
 
