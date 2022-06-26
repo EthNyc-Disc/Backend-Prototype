@@ -1,7 +1,7 @@
 const Web3 = require('web3')         
 const web3 = new Web3(Web3.givenProvider || 'https://eth-goerli.gateway.pokt.network/v1/lb/62b7830e123e6f003984c794') // Pokt Integration
 const prompt = require('prompt-sync')()
-
+require('dotenv').config();
 const EpnsSDK = require("@epnsproject/backend-sdk-staging").default;
 const ethers = require('ethers');
 // import { api, utils } from "@epnsproject/frontend-sdk-staging"; 
@@ -38,26 +38,19 @@ async function query_chain () {
                 }
                 
             }*/
-        
+            
+            var addresses = ['0x52fA3cD7C8926CF515a454658A27d710CF447b2f', '0x127a95027B5c7E1D807433837C9cDD7e6f336803']
 
-            const sample_addresses = ['0x52fA3cD7C8926CF515a454658A27d710CF447b2f' ,'0x127a95027B5c7E1D807433837C9cDD7e6f336803']
-                        // Sample Addresses were needed to be made due to no smart contracts being on Goerli
-            // The Conditional above would not work
             while (true) {
                 let user_prompt = prompt(': ')
                 if (user_prompt === 'send_message') {
-                    await broadcast_message(sample_addresses)
+                    await broadcast_message(addresses)
                 } else if (user_prompt == 'fetch') {
                     var user_user_address = prompt('Wallet Address: ')
                     await fetch_notifications(user_user_address)
 
                 }
             }
-
-
-            
-            
-        
             
         }
 
