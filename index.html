@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+    <head>
+        <link rel="stylesheet" href="index.css">
+
+    </head>
+    <body>
+
+        <h1>Fractal</h1> 
+        A broadcasting app
+        <br>
+
+        <h3 for="network">Choose the NFT network:</h3>
+        <select name="network" id="network">
+          <option value="eth">Ethereum</option>
+          <option value="polygon">polygon</option>
+        </select>
+
+        <h3>NFT Contract Address:</h3>
+        <input type="text" id="input-nft-address">
+        
+        <h2>EPNS Broadcast Message Inputs:</h2>
+        <h3>Title:</h3>
+        <input type="text" id="input-notification-title">
+
+        <h3>Body:</h3>
+        <input type="text" id="input-notification-body">
+        <br><br><br>
+        
+        <button id="send-btn">SEND</button>
+        <h3 id="ack-send"></h3>
+        
+        <script src="index.js"></script>
+    </body>
+</html>
