@@ -1,4 +1,4 @@
-# Decentralized Communication 💬
+# Fractal - Decentralized Communication 💬
 
 Fractal is a decentralized sos/announcement platform that allows users to contact users of their NFTs! Powered by EPNS, users can now send messages their holders' addresses. 
 
