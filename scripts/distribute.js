@@ -4,6 +4,7 @@ const prompt = require('prompt-sync')()
 require('dotenv').config();
 const EpnsSDK = require("@epnsproject/backend-sdk-staging").default;
 const ethers = require('ethers');
+const fetch = require('node-fetch');
 // import { api, utils } from "@epnsproject/frontend-sdk-staging"; 
 
 const connection_status = () => {
@@ -113,5 +114,27 @@ async function broadcast_message (addresses) {
     }
     
 }
+
+// query_chain()
+
+async function fetch_data(chainId, address, api_key, baseURL) {
+    const url = new URL(`${baseURL}/${chainId}/tokens/${address}/token_holders/?key=${api_key}`);
+    const response = await fetch(url);
+    const result = await response.json();
+    const data = result.data;
+    console.log(data)
+    return data;
+}
+
+
+async function query_chain() {
+    const baseURL = 'https://api.covalenthq.com/v1'
+    const chainId = '1'
+    const given_contract = prompt('Contract Address to Query: ')
+    const api_key = 'ckey_d6591b5b3a29491dba00f3d9297'
+    array = await fetch_data(chainId, given_contract, api_key, baseURL)
+    console.log(array)
+}
+
 
 query_chain()
