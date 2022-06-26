@@ -1,15 +1,14 @@
-const Web3 = require('web3')            // Pokt Integration
-const web3 = new Web3(Web3.givenProvider || 'https://eth-goerli.gateway.pokt.network/v1/lb/62b7830e123e6f003984c794')
-var prompt = require('prompt-sync')();
+import Web3 from 'web3'           
+const web3 = new Web3(Web3.givenProvider || 'https://eth-goerli.gateway.pokt.network/v1/lb/62b7830e123e6f003984c794') // Pokt Integration
+import promptSync from 'prompt-sync';
+const prompt = promptSync()
 
-var EpnsSDK = require('@epnsproject/backend-sdk-staging')
+import EpnsSDK from '@epnsproject/backend-sdk-staging';
 
 const connection_status = () => {
-    result = web3.version
+    const result = web3.version
     return result
 }
-
-
 
 
 /* async function create_transaction (){
@@ -23,10 +22,11 @@ const connection_status = () => {
 } */
 
 async function query_chain () {
+    let rel_contract = undefined
     try {
         let fetch_version = connection_status()
         const given_contract = prompt('Contract Address to Query: ')
-        console.log(given_contract)
+        rel_contract = given_contract
         let contract_check = web3.utils.isAddress(given_contract)
         if (contract_check === false) {
             console.log(`${given_contract} was not a valid contract`)
@@ -59,7 +59,8 @@ async function query_chain () {
 
     //}
     } catch (err) {
-        console.log(`${given_contract} is not a valid address`)
+        console.log(`${rel_contract} is not a valid address`)
+        console.log(err)
     }
     
 
@@ -86,8 +87,7 @@ async function broadcast_message (addresses) {
             '',
             null);
         
-
-        
+ 
     }
     
 }
