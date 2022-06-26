@@ -13,47 +13,26 @@ const connection_status = () => {
 }
 
 
-
-async function query_chain () {
+async function running () {
     
     try {
         let fetch_version = connection_status()
-        const given_contract = prompt('Contract Address to Query: ')
-        let contract_check = web3.utils.isAddress(given_contract)
-        if (contract_check === false) {
-            console.log(`${given_contract} was not a valid contract`)
-        } else {
-            // await create_transaction()
-            /*
-            let real_addresses = web3.eth.getPastLogs(given_contract)
-            if (real_addresses.length === 0) {
-                console.log('There was an error with the contract')
-            } else {
-                
-                let real_addresses_idx = 0 
-                let holder_addresses = []
-                for (real_addresses_idx; real_addresses_idx <= real_addresses.length; real_addresse_idx++) {
-                    const trans_dict = real_addresses[real_addresses_idx]
-                    holder_address = trans_dict['address']
-                    holder_addresses.push(holder_address)
-                }
-                
-            }*/
-            
-            var addresses = ['0x52fA3cD7C8926CF515a454658A27d710CF447b2f', '0x127a95027B5c7E1D807433837C9cDD7e6f336803']
+        var addresses = await filter_accounts()
+        
+        // var addresses = ['0x52fA3cD7C8926CF515a454658A27d710CF447b2f', '0x127a95027B5c7E1D807433837C9cDD7e6f336803'] // Test Addresses
 
-            while (true) {
-                let user_prompt = prompt(': ')
-                if (user_prompt === 'send_message') {
-                    await broadcast_message(addresses)
-                } else if (user_prompt == 'fetch') {
-                    var user_user_address = prompt('Wallet Address: ')
-                    await fetch_notifications(user_user_address)
+        while (true) {
+            let user_prompt = prompt(': ')
+            if (user_prompt === 'send_message') {
+                await broadcast_message(addresses)
+            } else if (user_prompt == 'fetch') {
+                var user_user_address = prompt('Wallet Address: ')
+                await fetch_notifications(user_user_address)
 
-                }
             }
-            
         }
+            
+        
 
 
     //}
@@ -115,7 +94,7 @@ async function broadcast_message (addresses) {
     
 }
 
-// query_chain()
+running()
 
 
 async function fetch_data(chainId, address, api_key, baseURL) {
@@ -173,8 +152,8 @@ async function filter_accounts () {
 }
 
 
-async function test() {
+/*async function test() {
     resulting = await filter_accounts()
     console.log(resulting)
 }
-console.log(test())
+console.log(test())*/
