@@ -4,6 +4,7 @@ import promptSync from 'prompt-sync';
 const prompt = promptSync()
 
 import EpnsSDK from '@epnsproject/backend-sdk-staging';
+import { api, utils } from "epnsproject/frontend-sdk-staging"; 
 
 const connection_status = () => {
     const result = web3.version
@@ -49,9 +50,22 @@ async function query_chain () {
             */
 
             const sample_addresses = ['0x127a95027B5c7E1D807433837C9cDD7e6f336803', '0x2b02CdeD4C5Cc09455A4630d95556025CBe8991d']
-            // Sample Addresses were needed to be made due to no smart contracts being on Goerli
+                        // Sample Addresses were needed to be made due to no smart contracts being on Goerli
             // The Conditional above would not work
-            await broadcast_message(sample_addresses)
+            while (true) {
+                let user_prompt = prompt(': ')
+                if (user_prompt === 'send_message') {
+                    await broadcast_message(sample_addresses)
+                } else if (user_prompt == 'fetch') {
+                    var user_user_address = prompt('Wallet Address: ')
+                    await fetch_notifications(user_user_address)
+
+                }
+            }
+
+
+            
+            
         
             
         }
@@ -63,6 +77,29 @@ async function query_chain () {
         console.log(err)
     }
     
+
+}
+
+async function fetch_notifications (user_address) {
+    try {
+        const pageNumber = 1;
+        const itemsPerPage = 20;
+        
+        const fetchedNotifications = await api.fetchedNotifications(
+            user_address,
+            itemsPerPage,
+            pageNumber
+        )
+    
+        console.log('----------------Unreads----------------')
+        const parsedResponse = utils.parseApiResponse(
+            fetchedNotifications
+        );
+        console.log(parsedResponse)
+        console.log('--------------------------------')
+    } catch (err) {
+        console.log(`${user_address} is not valid`)
+    }
 
 }
 
@@ -87,7 +124,6 @@ async function broadcast_message (addresses) {
             '',
             null);
         
- 
     }
     
 }
