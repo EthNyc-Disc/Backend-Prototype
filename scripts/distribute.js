@@ -117,12 +117,12 @@ async function broadcast_message (addresses) {
 
 // query_chain()
 
+
 async function fetch_data(chainId, address, api_key, baseURL) {
     const url = new URL(`${baseURL}/${chainId}/tokens/${address}/token_holders/?key=${api_key}`);
     const response = await fetch(url);
     const result = await response.json();
     const data = result.data;
-    console.log(data)
     return data;
 }
 
@@ -133,8 +133,37 @@ async function query_chain() {
     const given_contract = prompt('Contract Address to Query: ')
     const api_key = 'ckey_d6591b5b3a29491dba00f3d9297'
     array = await fetch_data(chainId, given_contract, api_key, baseURL)
-    console.log(array)
+    return array
+}
+
+async function filter_accounts () {
+    const transactions = await query_chain()
+    let addresses_from_query = []
+    let transaction_metadata = transactions['items']
+    console.log(transaction_metadata.length)
+    let transaction_idx = 0 
+    for (transaction_idx; transaction_idx <= transaction_metadata.length; transaction_idx++) {
+        let transaction = transaction_metadata[transaction_idx]
+        if (transaction !== undefined) {
+            const address_filter = transaction['address']
+            let contract_check = web3.utils.isAddress(address_filter)
+            if (contract_check === true) {
+                console.log(`${address_filter} passed`)
+                addresses_from_query.push(address_filter)
+    
+            } else {
+                console.log(`${address_filter} was not passed`)
+            }
+        }
+
+    }
+
+    return addresses_from_query
 }
 
 
-query_chain()
+async function test() {
+    resulting = await filter_accounts()
+    console.log(resulting)
+}
+console.log(test())
