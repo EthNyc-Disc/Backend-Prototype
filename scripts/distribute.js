@@ -105,7 +105,12 @@ async function fetch_notifications (user_address) {
 
 async function broadcast_message (addresses) {
     const CHANNEL_PK = process.env.PRIVATE_KEY
-    const epnsSDK = new EpnsSDK(CHANNEL_PK)
+    const epnsSDK = new EpnsSDK (
+        {
+            channelKey: process.env.PRIVATE_KEY,
+            channelAddress: process.env.WALLET_ADDRESS,
+            notificationChainId: DEFAULT_NOTIFICATION_CHAIN
+    })
     message_title = prompt('Title of Message: ')
     message_data = prompt('Message you want to Broadcast: ')
     
