@@ -33,10 +33,7 @@ async function running () {
             }
         }
             
-        
-
-
-    //}
+      //}
     } catch (err) {
         console.log(`Contract is not a valid address`)
         console.log(err)
@@ -70,7 +67,7 @@ async function fetch_notifications (user_address) {
 
 async function broadcast_message (addresses) {
     const CHANNEL_PK = process.env.PRIVATE_KEY
-    const epnsSDK = new EpnsSDK('0x5a5d6c906d34abb44538ede840ad3557911813e09944b01b10dab4a8e4cfa03f')
+    const epnsSDK = new EpnsSDK(process.env.PRIVATE_KEY)
     const message_title = prompt('Title of Message: ')
     const message_data = prompt('Message you want to Broadcast: ')
     
@@ -125,7 +122,7 @@ async function query_chain(network) {
         const given_contract = prompt('Contract Address to Query: ')    
         const contract_verify = web3.utils.isAddress(given_contract)
         if (contract_verify === true) {
-            const api_key = 'ckey_d6591b5b3a29491dba00f3d9297'
+            const api_key = process.env.API_KEY
             array = await fetch_data(chainId, given_contract, api_key, baseURL)
             return array
         } else {
