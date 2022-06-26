@@ -13,6 +13,7 @@ const connection_status = () => {
 }
 
 
+
 async function running () {
     
     try {
@@ -106,23 +107,37 @@ async function fetch_data(chainId, address, api_key, baseURL) {
 }
 
 
-async function query_chain() {
-    const baseURL = 'https://api.covalenthq.com/v1'
-    const chainId = '1'
-    const given_contract = prompt('Contract Address to Query: ')    
-    const contract_verify = web3.utils.isAddress(given_contract)
-    if (contract_verify === true) {
-        const api_key = 'ckey_d6591b5b3a29491dba00f3d9297'
-        array = await fetch_data(chainId, given_contract, api_key, baseURL)
-        return array
+async function query_chain(network) {
+    var chainId = undefined
+    var validation = true
+    const block_id = {'eth':'1', 'polygon':'137'}
+    if (network === 'eth') {
+        chainId = block_id['eth'] 
+    } else if (network === 'polygon') {
+        chainId = block_id['polygon']
     } else {
-        return false
+        console.log('Invalid Network')
+        validation = false
     }
+    if (validation === true) {
+        const baseURL = 'https://api.covalenthq.com/v1'
+    
+        const given_contract = prompt('Contract Address to Query: ')    
+        const contract_verify = web3.utils.isAddress(given_contract)
+        if (contract_verify === true) {
+            const api_key = 'ckey_d6591b5b3a29491dba00f3d9297'
+            array = await fetch_data(chainId, given_contract, api_key, baseURL)
+            return array
+        } else {
+            return false
+        }
+    } else {}
 
 }
 
 async function filter_accounts () {
-    const transactions = await query_chain()
+    var network = prompt('Network of Contract: ')
+    const transactions = await query_chain(network)
     if (transactions !== false) {
         let addresses_from_query = []
         let transaction_metadata = transactions['items']
